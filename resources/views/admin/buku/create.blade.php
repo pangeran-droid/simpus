@@ -1,0 +1,235 @@
+@extends('layouts.admin')
+
+@section('main-content')
+
+<!-- Page Heading -->
+<h1 class="h3 mb-4 text-gray-800">
+    {{ __('Tambah Buku') }}
+</h1>
+
+@if ($errors->any())
+    <div class="alert alert-danger border-left-danger" role="alert">
+        <ul class="pl-4 my-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<div class="container-fluid px-0">
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                Tambah Data Buku
+            </h6>
+        </div>
+
+        <div class="card-body">
+
+            <form action="{{ route('store_buku') }}"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                @csrf
+
+                <!-- Kode Buku -->
+                <div class="form-group mb-3">
+                    <label for="kode_buku">Kode Buku</label>
+
+                    <input
+                        type="text"
+                        id="kode_buku"
+                        name="kode_buku"
+                        class="form-control"
+                        value="{{ old('kode_buku') }}"
+                        placeholder="Contoh: BK001"
+                        required
+                    >
+
+                    <small class="form-text text-muted">
+                        Kode buku harus unik.
+                    </small>
+                </div>
+
+                <!-- Judul -->
+                <div class="form-group mb-3">
+                    <label for="judul">Judul Buku</label>
+
+                    <input
+                        type="text"
+                        id="judul"
+                        name="judul"
+                        class="form-control"
+                        value="{{ old('judul') }}"
+                        placeholder="Masukkan judul buku"
+                        required
+                    >
+                </div>
+
+                <!-- Kategori -->
+                <div class="form-group mb-3">
+                    <label for="kategori_id">Kategori</label>
+
+                    <select
+                        id="kategori_id"
+                        name="kategori_id"
+                        class="form-control"
+                        required
+                    >
+                        <option value="">
+                            -- Pilih Kategori --
+                        </option>
+
+                        @foreach($categories as $category)
+                            <option
+                                value="{{ $category->id }}"
+                                {{ old('kategori_id') == $category->id ? 'selected' : '' }}
+                            >
+                                {{ $category->kategori }}
+                            </option>
+                        @endforeach
+
+                    </select>
+                </div>
+
+                <!-- Penulis -->
+                <div class="form-group mb-3">
+                    <label for="penulis">Penulis</label>
+
+                    <input
+                        type="text"
+                        id="penulis"
+                        name="penulis"
+                        class="form-control"
+                        value="{{ old('penulis') }}"
+                        placeholder="Masukkan nama penulis"
+                        required
+                    >
+                </div>
+
+                <!-- Penerbit -->
+                <div class="form-group mb-3">
+                    <label for="penerbit">Penerbit</label>
+
+                    <input
+                        type="text"
+                        id="penerbit"
+                        name="penerbit"
+                        class="form-control"
+                        value="{{ old('penerbit') }}"
+                        placeholder="Masukkan nama penerbit"
+                        required
+                    >
+                </div>
+
+                <!-- Tahun Terbit -->
+                <div class="form-group mb-3">
+                    <label for="tahun_terbit">Tahun Terbit</label>
+
+                    <input
+                        type="number"
+                        id="tahun_terbit"
+                        name="tahun_terbit"
+                        class="form-control"
+                        value="{{ old('tahun_terbit') }}"
+                        placeholder="Contoh: 2025"
+                        min="1900"
+                        max="{{ date('Y') }}"
+                        required
+                    >
+                </div>
+
+                <!-- ISBN -->
+                <div class="form-group mb-3">
+                    <label for="isbn">ISBN</label>
+
+                    <input
+                        type="text"
+                        id="isbn"
+                        name="isbn"
+                        class="form-control"
+                        value="{{ old('isbn') }}"
+                        placeholder="Masukkan ISBN"
+                    >
+                </div>
+
+                <!-- Jumlah -->
+                <div class="form-group mb-3">
+                    <label for="jumlah">Jumlah Buku</label>
+
+                    <input
+                        type="number"
+                        id="jumlah"
+                        name="jumlah"
+                        class="form-control"
+                        value="{{ old('jumlah', 1) }}"
+                        min="1"
+                        placeholder="Masukkan jumlah buku"
+                        required
+                    >
+                </div>
+
+                <!-- Lokasi Rak -->
+                <div class="form-group mb-3">
+                    <label for="lokasi_rak">Lokasi Rak</label>
+
+                    <input
+                        type="text"
+                        id="lokasi_rak"
+                        name="lokasi_rak"
+                        class="form-control"
+                        value="{{ old('lokasi_rak') }}"
+                        placeholder="Contoh: Rak A-01"
+                        required
+                    >
+                </div>
+
+                <!-- Foto -->
+                <div class="form-group mb-4">
+                    <label for="foto">
+                        Foto Sampul Buku
+                    </label>
+
+                    <input
+                        type="file"
+                        id="foto"
+                        name="foto"
+                        class="form-control-file"
+                        accept=".jpg,.jpeg,.png"
+                    >
+
+                    <small class="form-text text-muted">
+                        Format: JPG, JPEG, PNG. Maksimal 1 MB.
+                    </small>
+                </div>
+
+                <hr>
+
+                <!-- Button -->
+                <div class="mt-4">
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Simpan Buku
+                    </button>
+
+                    <a href="{{ route('admin.buku') }}"
+                       class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+@endsection
