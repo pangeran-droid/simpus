@@ -6,7 +6,7 @@
     {{ __('Transaksi Peminjaman') }}
 </h1>
 
-{{-- Pesan sukses --}}
+<!-- Pesan sukses -->
 @if (session('success'))
     <div class="alert alert-success border-left-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -17,7 +17,7 @@
     </div>
 @endif
 
-{{-- Pesan error --}}
+<!-- Pesan error -->
 @if ($errors->any())
     <div class="alert alert-danger border-left-danger" role="alert">
         <ul class="pl-4 my-2">
@@ -30,7 +30,7 @@
 
 <div class="container-fluid px-0">
 
-    {{-- Tombol tambah --}}
+    <!-- Tombol tambah -->
     <div class="d-flex justify-content-end mb-3">
         <a href="{{ route('admin.transaksi.peminjaman.create') }}"
            class="btn btn-primary">
@@ -39,7 +39,7 @@
         </a>
     </div>
 
-    {{-- Card --}}
+    <!-- Card -->
     <div class="card shadow">
 
         <div class="card-body">
@@ -71,19 +71,19 @@
 
                             <tr>
 
-                                {{-- No --}}
+                                <!-- No -->
                                 <td class="text-center">
                                     {{ $loop->iteration }}
                                 </td>
 
-                                {{-- Kode transaksi --}}
+                                <!-- Kode transaksi -->
                                 <td>
                                     <strong>
                                         {{ $peminjaman->kode_transaksi }}
                                     </strong>
                                 </td>
 
-                                {{-- Peminjam --}}
+                                <!-- Peminjam -->
                                 <td>
                                     @if ($peminjaman->user)
                                         <strong>
@@ -103,7 +103,7 @@
                                     @endif
                                 </td>
 
-                                {{-- Buku --}}
+                                <!-- Buku -->
                                 <td>
                                     @if ($peminjaman->buku)
 
@@ -124,7 +124,7 @@
                                     @endif
                                 </td>
 
-                                {{-- Kategori --}}
+                                <!-- Kategori -->
                                 <td>
                                     @if ($peminjaman->buku && $peminjaman->buku->kategori)
 
@@ -139,7 +139,7 @@
                                     @endif
                                 </td>
 
-                                {{-- Rak --}}
+                                <!-- Rak -->
                                 <td>
                                     @if ($peminjaman->buku && $peminjaman->buku->rak)
 
@@ -154,17 +154,17 @@
                                     @endif
                                 </td>
 
-                                {{-- Tanggal pinjam --}}
+                                <!-- Tanggal pinjam -->
                                 <td class="text-center">
                                     {{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d-m-Y') }}
                                 </td>
 
-                                {{-- Tanggal kembali --}}
+                                <!-- Tanggal kembali -->
                                 <td class="text-center">
                                     {{ \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->format('d-m-Y') }}
                                 </td>
 
-                                {{-- Realisasi kembali --}}
+                                <!-- Realisasi kembali -->
                                 <td class="text-center">
 
                                     @if ($peminjaman->tanggal_realisasi_kembali)
@@ -181,7 +181,7 @@
 
                                 </td>
 
-                                {{-- Status --}}
+                                <!-- Status -->
                                 <td class="text-center">
 
                                     @if ($peminjaman->status === 'dipinjam')
@@ -212,7 +212,7 @@
 
                                 </td>
 
-                                {{-- Denda --}}
+                                <!-- Denda -->
                                 <td class="text-center">
 
                                     @if ($peminjaman->denda > 0)
@@ -231,10 +231,10 @@
 
                                 </td>
 
-                                {{-- Action --}}
+                                <!-- Action -->
                                 <td class="text-center">
 
-                                    {{-- Detail --}}
+                                    <!-- Detail -->
                                     <a href="{{ route('admin.transaksi.peminjaman.detail', $peminjaman->id) }}"
                                        class="btn btn-primary btn-sm"
                                        title="Detail">
@@ -243,7 +243,7 @@
 
                                     </a>
 
-                                    {{-- Edit --}}
+                                    <!-- Edit -->
                                     <a href="{{ route('admin.transaksi.peminjaman.edit', $peminjaman->id) }}"
                                        class="btn btn-info btn-sm"
                                        title="Edit">
@@ -252,7 +252,7 @@
 
                                     </a>
 
-                                    {{-- Hapus --}}
+                                    <!-- Hapus -->
                                     <form action="{{ route('admin.transaksi.peminjaman.destroy', $peminjaman->id) }}"
                                           method="POST"
                                           style="display: inline;"

@@ -15,18 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('kode_buku', 20)->unique();
             $table->string('judul', 255);
-            $table->foreignId('kategori_id')
-                ->constrained('kategoris')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
+            $table->foreignId('kategori_id')->constrained('kategoris')->cascadeOnUpdate()->restrictOnDelete();
             $table->string('penulis', 100);
             $table->string('penerbit', 100);
             $table->year('tahun_terbit');
             $table->unsignedInteger('stok')->default(0);
-            $table->foreignId('rak_id')
-                ->constrained('raks')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
+            $table->foreignId('rak_id')->constrained('raks')->cascadeOnUpdate()->restrictOnDelete();
             $table->string('cover')->nullable();
             $table->text('deskripsi')->nullable();
             $table->timestamps();

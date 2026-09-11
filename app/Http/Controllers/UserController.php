@@ -11,7 +11,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+        $data = [];
+        $title = 'Home Dashboard';
+
+        return view('user.index', compact('data', 'title'));
     }
 
     /**

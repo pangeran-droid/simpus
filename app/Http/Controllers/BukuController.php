@@ -31,7 +31,9 @@ class BukuController extends Controller
         $categories = Kategori::orderBy('kategori', 'asc')->get();
         $raks = Rak::orderBy('nama_rak', 'asc')->get();
 
-        return view('admin.buku.create', compact('categories', 'raks'));
+        $title = 'Tambah Buku';
+
+        return view('admin.buku.create', compact('categories', 'raks', 'title'));
     }
 
     public function store_buku(Request $request)
@@ -88,7 +90,9 @@ class BukuController extends Controller
         $categories = Kategori::orderBy('kategori', 'asc')->get();
         $raks = Rak::orderBy('nama_rak', 'asc')->get();
 
-        return view('admin.buku.edit', compact('buku', 'categories', 'raks'));
+        $title = 'Edit Buku';
+
+        return view('admin.buku.edit', compact('buku', 'categories', 'raks', 'title'));
     }
 
     public function update_buku(Request $request, string $id)

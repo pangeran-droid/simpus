@@ -13,7 +13,7 @@
 
     <div class="row">
 
-        {{-- Kode Transaksi --}}
+        <!-- Kode Transaksi -->
         <div class="col-md-6 mb-3">
             <label class="font-weight-bold">
                 Kode Transaksi
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        {{-- Status --}}
+        <!-- Status -->
         <div class="col-md-6 mb-3">
             <label class="font-weight-bold">
                 Status
@@ -61,7 +61,7 @@
 
     <hr>
 
-    {{-- Peminjam --}}
+    <!-- Peminjam -->
     <h6 class="font-weight-bold text-primary mb-3">
         Data Peminjam
     </h6>
@@ -96,7 +96,7 @@
 
     <hr>
 
-    {{-- Data Buku --}}
+    <!-- Data Buku -->
     <h6 class="font-weight-bold text-primary mb-3">
         Data Buku
     </h6>
@@ -175,7 +175,7 @@
 
     <hr>
 
-    {{-- Data Peminjaman --}}
+    <!-- Data Peminjaman -->
     <h6 class="font-weight-bold text-primary mb-3">
         Data Peminjaman
     </h6>
@@ -234,7 +234,7 @@
 
     <hr>
 
-    {{-- Denda --}}
+    <!-- Denda -->
     <div class="row">
 
         <div class="col-md-6">
@@ -267,7 +267,7 @@
 
     <hr>
 
-    {{-- Tombol --}}
+    <!-- Tombol -->
     <div class="d-flex justify-content-between">
 
         <a href="{{ route('admin.transaksi.peminjaman') }}"

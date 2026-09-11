@@ -41,9 +41,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/users/{id}/edit', [HomeController::class, 'edit_user'])
         ->name('admin.users.edit');
     Route::put('/admin/users/{id}', [HomeController::class, 'update_user'])
-        ->name('admin.user.update');
+        ->name('admin.users.update');
     Route::delete('/admin/users/{id}', [HomeController::class, 'destroy_user'])
-        ->name('admin.user.destroy');
+        ->name('admin.users.destroy');
+    Route::get('/admin/users/kartu', [HomeController::class, 'kartu_user'])
+        ->name('admin.users.kartu');
+    Route::get('/admin/users/kartu/{id}/detail-kartu', [HomeController::class, 'detail_kartu_user'])
+        ->name('admin.users.kartu.detail-kartu');
 
     /* Admin Routes Kategori */
     Route::get('/admin/kategori', [KategoriController::class, 'index'])

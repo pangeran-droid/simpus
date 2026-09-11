@@ -24,35 +24,35 @@
     @endif
 
     <div class="container-fluid px-0">
-    <!-- Komponen Filter Role dan Tombol Tambah -->
-    <div class="card shadow mb-4">
-        <div class="card-body py-3 d-flex flex-wrap align-items-center justify-content-between">
 
-            <!-- Tab Filter untuk Mengubah Role di URL -->
-            <div class="nav nav-pills mb-2 mb-md-0">
-                <a class="nav-link {{ !$selectedRole || $selectedRole == 'all' ? 'active' : '' }}"
-                   href="{{ route('admin.users', ['role' => 'all', 'search' => request('search')]) }}">
-                    <i class="fas fa-users"></i> Semua User
+        <div class="card shadow mb-4">
+            <div class="card-body py-3 d-flex flex-wrap align-items-center justify-content-between">
+
+                <!-- Tab Filter untuk Mengubah Role di URL -->
+                <div class="nav nav-pills mb-2 mb-md-0">
+                    <a class="nav-link {{ !$selectedRole || $selectedRole == 'all' ? 'active' : '' }}"
+                    href="{{ route('admin.users', ['role' => 'all', 'search' => request('search')]) }}">
+                        <i class="fas fa-users"></i> Semua User
+                    </a>
+
+                    <a class="nav-link {{ $selectedRole == 'admin' ? 'active text-white bg-primary' : '' }}"
+                    href="{{ route('admin.users', ['role' => 'admin', 'search' => request('search')]) }}">
+                        <i class="fas fa-user-shield"></i> Admin
+                    </a>
+
+                    <a class="nav-link {{ $selectedRole == 'user' ? 'active text-white bg-success' : '' }}"
+                    href="{{ route('admin.users', ['role' => 'user', 'search' => request('search')]) }}">
+                        <i class="fas fa-user"></i> Regular User
+                    </a>
+                </div>
+
+                <!-- Tambah User -->
+                <a href="{{ route('admin.users.create') }}" class="btn btn-primary shadow-sm">
+                    <i class="fas fa-plus"></i> Tambah User
                 </a>
 
-                <a class="nav-link {{ $selectedRole == 'admin' ? 'active text-white bg-primary' : '' }}"
-                   href="{{ route('admin.users', ['role' => 'admin', 'search' => request('search')]) }}">
-                    <i class="fas fa-user-shield"></i> Admin
-                </a>
-
-                <a class="nav-link {{ $selectedRole == 'user' ? 'active text-white bg-success' : '' }}"
-                   href="{{ route('admin.users', ['role' => 'user', 'search' => request('search')]) }}">
-                    <i class="fas fa-user"></i> Regular User
-                </a>
             </div>
-
-            <!-- Tambah User -->
-            <a href="{{ route('admin.users.create') }}" class="btn btn-primary shadow-sm">
-                <i class="fas fa-plus"></i> Tambah User
-            </a>
-
         </div>
-    </div>
 
 
         <div class="card shadow">
@@ -62,6 +62,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
+                                {{-- <th>Kode User</th> --}}
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>No. Telepon</th>
@@ -75,6 +76,7 @@
                             @forelse($data as $user)
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>
+                                    {{-- <td><strong>{{ $user->user_code }}</strong></td> --}}
                                     <td><strong>{{ $user->name }}</strong></td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone ?? '-' }}</td>
@@ -109,7 +111,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </a>
 
-                                            <form action="{{ route('admin.user.destroy', $user->id) }}"
+                                            <form action="{{ route('admin.users.destroy', $user->id) }}"
                                                 method="POST"
                                                 style="display: inline;"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?');">

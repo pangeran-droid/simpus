@@ -3,10 +3,10 @@
 @section('main-content')
 <h1 class="h3 mb-4 text-gray-800"> {{ __('Laporan Transaksi') }} </h1>
 
-{{-- Statistik --}}
+<!-- Statistik -->
 <div class="row">
 
-{{-- Total Transaksi --}}
+<!-- Total Transaksi -->
 <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-primary shadow h-100 py-2">
         <div class="card-body">
@@ -21,7 +21,7 @@
     </div>
 </div>
 
-{{-- Sedang Dipinjam --}}
+<!-- Sedang Dipinjam -->
 <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-warning shadow h-100 py-2">
         <div class="card-body">
@@ -36,7 +36,7 @@
     </div>
 </div>
 
-{{-- Sudah Kembali --}}
+<!-- Sudah Kembali -->
 <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-success shadow h-100 py-2">
         <div class="card-body">
@@ -51,7 +51,7 @@
     </div>
 </div>
 
-{{-- Terlambat --}}
+<!-- Terlambat -->
 <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-danger shadow h-100 py-2">
         <div class="card-body">
@@ -66,11 +66,10 @@
     </div>
 </div>
 
-</div>
-
-{{-- Total Denda --}}
-<div class="row mb-4"> <div class="col-md-4"> <div class="card border-left-danger shadow"> <div class="card-body">
-
+<!-- Total Denda -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card-body">
             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                 Total Denda
             </div>
@@ -78,14 +77,14 @@
             <div class="h5 mb-0 font-weight-bold text-gray-800">
                 Rp {{ number_format($totalDenda, 0, ',', '.') }}
             </div>
-
         </div>
     </div>
 </div>
 
 </div>
 
-{{-- Filter --}}
+
+<!-- Filter -->
 <div class="card shadow mb-4">
 
 <div class="card-header py-3">
@@ -100,7 +99,7 @@
 
         <div class="row">
 
-            {{-- Tanggal Mulai --}}
+            <!-- Tanggal Mulai -->
             <div class="col-md-3">
                 <div class="form-group">
 
@@ -120,7 +119,7 @@
             </div>
 
 
-            {{-- Tanggal Selesai --}}
+            <!-- Tanggal Selesai -->
             <div class="col-md-3">
                 <div class="form-group">
 
@@ -140,7 +139,7 @@
             </div>
 
 
-            {{-- Status --}}
+            <!-- Status -->
             <div class="col-md-2">
                 <div class="form-group">
 
@@ -179,7 +178,7 @@
             </div>
 
 
-            {{-- Peminjam --}}
+            <!-- Peminjam -->
             <div class="col-md-4">
                 <div class="form-group">
 
@@ -221,7 +220,7 @@
 
         <div class="row">
 
-            {{-- Buku --}}
+            <!-- Buku -->
             <div class="col-md-8">
 
                 <div class="form-group">
@@ -259,7 +258,7 @@
             </div>
 
 
-            {{-- Tombol --}}
+            <!-- Tombol -->
             <div class="col-md-4">
 
                 <div class="form-group">
@@ -298,7 +297,7 @@
 
 </div>
 
-{{-- Tabel laporan --}}
+<!-- Tabel laporan -->
 <div class="card shadow">
 
 <div class="card-header py-3 d-flex justify-content-between align-items-center">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Kategori;
+use App\Models\Buku;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -32,18 +34,51 @@ class HomeController extends Controller
 
             $user_type = Auth::user()->usertype;
 
-            if ($user_type == 'admin') {
-                $users = User::all()->count();
-                $kategori = Kategori::all()->count();
+        if ($user_type == 'admin') {
 
-                $title = 'Admin Dashboard';
+            $totalBuku = Buku::sum('stok');
+            $dipinjam = Peminjaman::where('status', 'dipinjam')->count();
+            $terlambat = Peminjaman::where('status', 'dipinjam')
+                ->whereDate('tanggal_kembali', '<', now()->toDateString())
+                ->count();
+            $terlambat += Peminjaman::where('status', 'terlambat')->count();
+            $users = User::where('usertype', 'user')->count();
+            $totalTransaksi = Peminjaman::count();
+            $totalDenda = Peminjaman::where('denda', '>', 0)->sum('denda');
 
-                $widget = [
-                    'users' => $users,
-                ];
+            $grafikDenda = [];
 
-                return view('admin.home', compact('widget', 'title'));
+            for ($bulan = 1; $bulan <= 12; $bulan++) {
+
+                $grafikDenda[] = Peminjaman::whereYear(
+                    'created_at',
+                    now()->year
+                )
+                    ->whereMonth('created_at', $bulan)
+                    ->sum('denda');
             }
+
+            $statusTransaksi = [
+                Peminjaman::where('status', 'dipinjam')->count(),
+                Peminjaman::where('status', 'terlambat')->count(),
+                Peminjaman::where('status', 'kembali')->count(),
+            ];
+
+            $title = 'Admin Dashboard';
+
+            $widget = [
+                'total_buku' => $totalBuku,
+                'dipinjam' => $dipinjam,
+                'terlambat' => $terlambat,
+                'users' => $users,
+                'total_transaksi' => $totalTransaksi,
+                'total_denda' => $totalDenda,
+                'grafik_denda' => $grafikDenda,
+                'status_transaksi' => $statusTransaksi,
+            ];
+
+            return view('admin.home', compact('widget', 'title'));
+        }
 
             if ($user_type == 'user') {
                 $data = [];
@@ -94,9 +129,9 @@ class HomeController extends Controller
             'phone' => 'required|numeric|digits_between:1,15',
             'address' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
-            'usertype' => 'required|in:user,admin',
             'password' => 'required|string|min:8|confirmed',
             'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:1048',
+            'usertype' => 'required|in:user,admin',
         ]);
 
         $filename = null;
@@ -119,9 +154,12 @@ class HomeController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'email' => $request->email,
-            'usertype' => $request->usertype,
             'password' => Hash::make($request->password),
             'foto_profile' => $filename,
+            'usertype' => $request->usertype,
+            'user_code' => $request->usertype === 'user'
+                ? User::generateUserCode()
+                : null,
         ]);
 
         return redirect()
@@ -149,9 +187,9 @@ class HomeController extends Controller
                 'max:255',
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
-            'usertype' => 'required|in:user,admin',
             'password' => 'nullable|string|min:8|confirmed',
             'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:1048',
+            'usertype' => 'required|in:user,admin',
         ]);
 
         $filename = $user->foto_profile;
@@ -206,5 +244,29 @@ class HomeController extends Controller
         $user->delete();
 
         return redirect()->route('admin.users')->with('success', 'Data user berhasil dihapus!');
+    }
+
+    public function kartu_user()
+    {
+        $user = User::where('usertype', 'user')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        $title = 'Kartu Anggota';
+
+        return view('admin.users.kartu.kartu', compact('user', 'title'));
+    }
+
+    public function detail_kartu_user(string $id)
+    {
+        $user = User::where('usertype', 'user')
+            ->findOrFail($id);
+
+        $title = 'Detail Kartu Anggota';
+
+        return view(
+            'admin.users.kartu.detail-kartu',
+            compact('user', 'title')
+        );
     }
 }

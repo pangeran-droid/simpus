@@ -16,14 +16,16 @@ class KategoriController extends Controller
     {
         $data = Kategori::orderBy('kategori', 'asc')->get();
 
-        $title = 'Daftar Category';
+        $title = 'Daftar Kategori';
 
         return view('admin.kategori.index', compact('data', 'title'));
     }
 
     public function create_kategori()
     {
-        return view('admin.kategori.create');
+        $title = 'Tambah Kategori';
+
+        return view('admin.kategori.create', compact('title'));
     }
 
     public function store_kategori(Request $request)
@@ -45,7 +47,9 @@ class KategoriController extends Controller
     {
         $category = Kategori::findOrFail($id);
 
-        return view('admin.kategori.edit', compact('category'));
+        $title = 'Edit Kategori';
+
+        return view('admin.kategori.edit', compact('category', 'title'));
     }
 
     public function update_kategori(Request $request, string $id)

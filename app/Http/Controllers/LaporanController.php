@@ -28,12 +28,6 @@ class LaporanController extends Controller
             'buku.rak',
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Filter tanggal
-        |--------------------------------------------------------------------------
-        */
-
         if ($tanggalMulai) {
             $query->whereDate('tanggal_pinjam', '>=', $tanggalMulai);
         }
@@ -42,31 +36,13 @@ class LaporanController extends Controller
             $query->whereDate('tanggal_pinjam', '<=', $tanggalSelesai);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Filter status
-        |--------------------------------------------------------------------------
-        */
-
         if ($status) {
             $query->where('status', $status);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Filter peminjam
-        |--------------------------------------------------------------------------
-        */
-
         if ($userId) {
             $query->where('user_id', $userId);
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Filter buku
-        |--------------------------------------------------------------------------
-        */
 
         if ($bukuId) {
             $query->where('buku_id', $bukuId);
@@ -76,12 +52,6 @@ class LaporanController extends Controller
             ->orderBy('tanggal_pinjam', 'desc')
             ->orderBy('id', 'desc')
             ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Statistik
-        |--------------------------------------------------------------------------
-        */
 
         $totalTransaksi = $data->count();
 
@@ -98,12 +68,6 @@ class LaporanController extends Controller
             ->count();
 
         $totalDenda = $data->sum('denda');
-
-        /*
-        |--------------------------------------------------------------------------
-        | Data filter
-        |--------------------------------------------------------------------------
-        */
 
         $users = User::where('usertype', 'user')
             ->orderBy('name', 'asc')

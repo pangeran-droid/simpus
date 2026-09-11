@@ -25,7 +25,7 @@
 @endif
 <div class="container-fluid px-0">
 
-{{-- Total denda --}}
+<!-- Total denda -->
 <div class="row mb-4">
 
     <div class="col-md-4">
@@ -72,7 +72,7 @@
 
 </div>
 
-{{-- Tabel --}}
+<!-- Tabel -->
 <div class="card shadow">
 
     <div class="card-header py-3">

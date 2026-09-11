@@ -93,23 +93,9 @@ class TransaksiController extends Controller
 
             DB::transaction(function () use ($request) {
 
-                /*
-                |--------------------------------------------------------------------------
-                | Ambil buku dan kunci record
-                |--------------------------------------------------------------------------
-                | lockForUpdate() mencegah dua transaksi mengambil stok yang
-                | sama secara bersamaan.
-                */
-
                 $buku = Buku::where('id', $request->buku_id)
                     ->lockForUpdate()
                     ->firstOrFail();
-
-                /*
-                |--------------------------------------------------------------------------
-                | Cek stok
-                |--------------------------------------------------------------------------
-                */
 
                 if ($buku->stok <= 0) {
                     throw new \Exception(
@@ -117,19 +103,7 @@ class TransaksiController extends Controller
                     );
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | Buat kode transaksi
-                |--------------------------------------------------------------------------
-                */
-
                 $kodeTransaksi = $this->generateKodeTransaksi();
-
-                /*
-                |--------------------------------------------------------------------------
-                | Buat transaksi peminjaman
-                |--------------------------------------------------------------------------
-                */
 
                 Peminjaman::create([
                     'kode_transaksi' => $kodeTransaksi,
@@ -141,12 +115,6 @@ class TransaksiController extends Controller
                     'status' => 'dipinjam',
                     'denda' => 0,
                 ]);
-
-                /*
-                |--------------------------------------------------------------------------
-                | Kurangi stok
-                |--------------------------------------------------------------------------
-                */
 
                 $buku->decrement('stok');
             });
@@ -206,7 +174,6 @@ class TransaksiController extends Controller
             'buku.rak',
         ])->findOrFail($id);
 
-        // Transaksi yang sudah dikembalikan jangan diedit
         if ($peminjaman->status === 'kembali') {
             return redirect()
                 ->route('admin.transaksi.peminjaman')
@@ -289,51 +256,21 @@ class TransaksiController extends Controller
 
             DB::transaction(function () use ($request, $peminjaman) {
 
-                /*
-                |--------------------------------------------------------------------------
-                | Kunci transaksi
-                |--------------------------------------------------------------------------
-                */
-
                 $transaksi = Peminjaman::where('id', $peminjaman->id)
                     ->lockForUpdate()
                     ->firstOrFail();
-
-                /*
-                |--------------------------------------------------------------------------
-                | Kunci buku lama
-                |--------------------------------------------------------------------------
-                */
 
                 $bukuLama = Buku::where('id', $transaksi->buku_id)
                     ->lockForUpdate()
                     ->firstOrFail();
 
-                /*
-                |--------------------------------------------------------------------------
-                | Jika buku diganti
-                |--------------------------------------------------------------------------
-                */
-
                 if ($transaksi->buku_id != $request->buku_id) {
 
-                    /*
-                    | Kembalikan stok buku lama
-                    */
-
                     $bukuLama->increment('stok');
-
-                    /*
-                    | Ambil dan kunci buku baru
-                    */
 
                     $bukuBaru = Buku::where('id', $request->buku_id)
                         ->lockForUpdate()
                         ->firstOrFail();
-
-                    /*
-                    | Pastikan stok buku baru tersedia
-                    */
 
                     if ($bukuBaru->stok <= 0) {
                         throw new \Exception(
@@ -342,18 +279,8 @@ class TransaksiController extends Controller
                         );
                     }
 
-                    /*
-                    | Kurangi stok buku baru
-                    */
-
                     $bukuBaru->decrement('stok');
                 }
-
-                /*
-                |--------------------------------------------------------------------------
-                | Update transaksi
-                |--------------------------------------------------------------------------
-                */
 
                 $transaksi->update([
                     'user_id' => $request->user_id,
@@ -387,21 +314,9 @@ class TransaksiController extends Controller
 
             DB::transaction(function () use ($id) {
 
-                /*
-                |--------------------------------------------------------------------------
-                | Ambil transaksi dan kunci record
-                |--------------------------------------------------------------------------
-                */
-
                 $peminjaman = Peminjaman::where('id', $id)
                     ->lockForUpdate()
                     ->firstOrFail();
-
-                /*
-                |--------------------------------------------------------------------------
-                | Transaksi yang sudah kembali jangan dihapus
-                |--------------------------------------------------------------------------
-                */
 
                 if ($peminjaman->status === 'kembali') {
                     throw new \Exception(
@@ -409,29 +324,11 @@ class TransaksiController extends Controller
                     );
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | Ambil buku dan kunci record
-                |--------------------------------------------------------------------------
-                */
-
                 $buku = Buku::where('id', $peminjaman->buku_id)
                     ->lockForUpdate()
                     ->firstOrFail();
 
-                /*
-                |--------------------------------------------------------------------------
-                | Kembalikan stok buku
-                |--------------------------------------------------------------------------
-                */
-
                 $buku->increment('stok');
-
-                /*
-                |--------------------------------------------------------------------------
-                | Hapus transaksi
-                |--------------------------------------------------------------------------
-                */
 
                 $peminjaman->delete();
             });
@@ -479,21 +376,9 @@ class TransaksiController extends Controller
 
             DB::transaction(function () use ($id) {
 
-                /*
-                |--------------------------------------------------------------------------
-                | Ambil transaksi dan kunci record
-                |--------------------------------------------------------------------------
-                */
-
                 $peminjaman = Peminjaman::where('id', $id)
                     ->lockForUpdate()
                     ->firstOrFail();
-
-                /*
-                |--------------------------------------------------------------------------
-                | Pastikan belum dikembalikan
-                |--------------------------------------------------------------------------
-                */
 
                 if ($peminjaman->status === 'kembali') {
                     throw new \Exception(
@@ -501,21 +386,9 @@ class TransaksiController extends Controller
                     );
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | Ambil buku dan kunci record
-                |--------------------------------------------------------------------------
-                */
-
                 $buku = Buku::where('id', $peminjaman->buku_id)
                     ->lockForUpdate()
                     ->firstOrFail();
-
-                /*
-                |--------------------------------------------------------------------------
-                | Hitung keterlambatan
-                |--------------------------------------------------------------------------
-                */
 
                 $tanggalKembali = Carbon::parse(
                     $peminjaman->tanggal_kembali
@@ -529,37 +402,18 @@ class TransaksiController extends Controller
                     $terlambat = (int) $tanggalKembali->diffInDays($tanggalRealisasi);
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | Hitung denda
-                |--------------------------------------------------------------------------
-                |
-                | Denda saat ini:
-                | Rp 2.000 / hari
-                |
-                */
-
+                /**
+                 * Denda 2000 per hari
+                 */
                 $dendaPerHari = 2000;
 
                 $denda = $terlambat * $dendaPerHari;
-
-                /*
-                |--------------------------------------------------------------------------
-                | Update transaksi
-                |--------------------------------------------------------------------------
-                */
 
                 $peminjaman->update([
                     'tanggal_realisasi_kembali' => $tanggalRealisasi,
                     'status' => 'kembali',
                     'denda' => $denda,
                 ]);
-
-                /*
-                |--------------------------------------------------------------------------
-                | Kembalikan stok buku
-                |--------------------------------------------------------------------------
-                */
 
                 $buku->increment('stok');
             });

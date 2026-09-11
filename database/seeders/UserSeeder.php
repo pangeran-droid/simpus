@@ -15,7 +15,8 @@ class UserSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'User',
             'email' => 'user@gmail.com',
-            // 'usertype' akan otomatis 'user' karena default
+            // 'usertype' => 'user',
+            'user_code' => \App\Models\User::generateUserCode(),
             'password' => 'password',
             'phone' => '089876543210',
             'address' => 'Jl. Pahlawan No. 10, Semarang',

@@ -16,6 +16,7 @@ class AdminSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'usertype' => 'admin',
+            'user_code' => null,
             'password' => 'password',
             'phone' => '081234567890',
             'address' => 'Kantor Pusat, Jakarta',

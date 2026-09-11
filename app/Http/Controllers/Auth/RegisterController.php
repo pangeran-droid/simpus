@@ -72,6 +72,8 @@ class RegisterController extends Controller
             'address' => $data['address'],
             'email' => $data['email'],
             'password' => $data['password'],
+            'usertype' => 'user',
+            'user_code' => User::generateUserCode(),
         ]);
     }
 }

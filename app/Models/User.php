@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'address', 'email', 'password', 'foto_profile',
+        'name', 'phone', 'address', 'user_code', 'email', 'password', 'foto_profile', 'usertype',
     ];
 
     /**
@@ -80,5 +81,16 @@ class User extends Authenticatable
     public function peminjamans(): HasMany
     {
         return $this->hasMany(Peminjaman::class, 'user_id');
+    }
+
+    public static function generateUserCode(): string
+    {
+        do {
+            $kode = 'SIMPUS-' . now()->format('Ymd') . '-' . strtoupper(
+                Str::random(5)
+            );
+        } while (self::where('user_code', $kode)->exists());
+
+        return $kode;
     }
 }

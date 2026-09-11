@@ -4,7 +4,7 @@
 
 <h1 class="h3 mb-4 text-gray-800"> {{ __('Edit Transaksi Peminjaman') }} </h1>
 
-{{-- Error --}}
+<!-- Error -->
 @if ($errors->any())
 <div class="alert alert-danger border-left-danger" role="alert">
 
@@ -42,7 +42,7 @@
         @csrf
         @method('PUT')
 
-        {{-- Kode Transaksi --}}
+        <!-- Kode Transaksi -->
         <div class="form-group">
 
             <label>
@@ -65,7 +65,7 @@
 
         <div class="row">
 
-            {{-- Peminjam --}}
+            <!-- Peminjam -->
             <div class="col-md-6">
 
                 <div class="form-group">
@@ -118,7 +118,7 @@
             </div>
 
 
-            {{-- Buku --}}
+            <!-- Buku -->
             <div class="col-md-6">
 
                 <div class="form-group">
@@ -199,7 +199,7 @@
 
         <div class="row">
 
-            {{-- Tanggal Pinjam --}}
+            <!-- Tanggal Pinjam -->
             <div class="col-md-6">
 
                 <div class="form-group">
@@ -231,7 +231,7 @@
             </div>
 
 
-            {{-- Tanggal Kembali --}}
+            <!-- Tanggal Kembali -->
             <div class="col-md-6">
 
                 <div class="form-group">
@@ -265,7 +265,7 @@
         </div>
 
 
-        {{-- Status --}}
+        <!-- Status -->
         <div class="alert alert-warning">
 
             <div class="row">
@@ -309,7 +309,7 @@
         </div>
 
 
-        {{-- Informasi --}}
+        <!-- Informasi -->
         <div class="alert alert-info">
 
             <i class="fas fa-info-circle"></i>
@@ -340,7 +340,7 @@
         </div>
 
 
-        {{-- Tombol --}}
+        <!-- Tombol -->
         <div class="d-flex justify-content-between">
 
             <a

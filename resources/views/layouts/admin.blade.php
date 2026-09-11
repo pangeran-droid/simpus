@@ -10,7 +10,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ isset($title) ? $title . ' - ' : '' }}{{ config('app.name') }}</title>
 
     <!-- Fonts -->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
@@ -30,7 +30,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/home') }}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ Auth::user()->usertype === 'admin' ? route('admin.home') : route('user.index') }}">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
@@ -41,10 +41,16 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item {{ Nav::isRoute('admin') }}">
-            <a class="nav-link" href="{{ route('admin.home') }}">
+        @php
+            $dashboardRoute = Auth::user()->usertype === 'admin' ? route('admin.home') : route('user.index');
+            $dashboardActive = Auth::user()->usertype === 'admin' ? request()->routeIs('admin.home') : request()->routeIs('user.index');
+        @endphp
+
+        <li class="nav-item {{ $dashboardActive ? 'active' : '' }}">
+            <a class="nav-link" href="{{ $dashboardRoute }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{ __('Dashboard') }}</span></a>
+                <span>{{ __('Dashboard') }}</span>
+            </a>
         </li>
 
         <!-- Admin Management -->
@@ -57,54 +63,63 @@
             <div class="sidebar-heading">{{ __('Menu Utama') }}</div>
 
             <!-- Master Data -->
-            <li class="nav-item">
+            @php
+                $masterAktif = request()->routeIs('admin.buku', 'admin.kategori', 'admin.rak');
+            @endphp
+            <li class="nav-item {{ $masterAktif ? 'active' : '' }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaster"
-                    aria-expanded="true" aria-controls="collapseMaster">
+                    aria-expanded="{{ $masterAktif ? 'true' : 'false' }}" aria-controls="collapseMaster">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Master Data</span>
                 </a>
-                <div id="collapseMaster" class="collapse" aria-labelledby="headingMaster" data-parent="#accordionSidebar">
+                <div id="collapseMaster" class="collapse {{ $masterAktif ? 'show' : '' }}" aria-labelledby="headingMaster" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('admin.buku') }}">Data Buku</a>
-                        <a class="collapse-item" href="{{ route('admin.kategori') }}">Kategori Buku</a>
-                        <a class="collapse-item" href="{{ route('admin.rak') }}">Rak Buku</a>
+                        <a class="collapse-item {{ request()->routeIs('admin.buku') ? 'active' : '' }}" href="{{ route('admin.buku') }}">Data Buku</a>
+                        <a class="collapse-item {{ request()->routeIs('admin.kategori') ? 'active' : '' }}" href="{{ route('admin.kategori') }}">Kategori Buku</a>
+                        <a class="collapse-item {{ request()->routeIs('admin.rak') ? 'active' : '' }}" href="{{ route('admin.rak') }}">Rak Buku</a>
                     </div>
                 </div>
             </li>
 
             <!-- Kanggotaan -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAnggota"
-                    aria-expanded="true" aria-controls="collapseAnggota">
+            @php
+                $keanggotaanAktif = request()->routeIs('admin.users.kartu') || (request()->routeIs('admin.users') && request('role') === 'user');
+            @endphp
+            <li class="nav-item {{ $keanggotaanAktif ? 'active' : '' }}">
+                <a class="nav-link {{ $keanggotaanAktif ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseAnggota"
+                    aria-expanded="{{ $keanggotaanAktif ? 'true' : 'false' }}" aria-controls="collapseAnggota">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Keanggotaan</span>
                 </a>
-                <div id="collapseAnggota" class="collapse" aria-labelledby="headingAnggota" data-parent="#accordionSidebar">
+                <div id="collapseAnggota" class="collapse {{ $keanggotaanAktif ? 'show' : '' }}" aria-labelledby="headingAnggota" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('admin.users', ['role' => 'user']) }}">Data Anggota</a>
-                        <a class="collapse-item" href="#">Kartu Anggota</a>
+                        <a class="collapse-item {{ request()->routeIs('admin.users') && request('role') === 'user' ? 'active' : '' }}" href="{{ route('admin.users', ['role' => 'user']) }}">Data Anggota</a>
+                        <a class="collapse-item {{ request()->routeIs('admin.users.kartu') ? 'active' : '' }}" href="{{ route('admin.users.kartu') }}">Kartu Anggota</a>
                     </div>
                 </div>
             </li>
 
             <!-- Transaksi -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransaksi"
-                    aria-expanded="true" aria-controls="collapseTransaksi">
+            @php
+                $transaksiAktif = request()->routeIs('admin.transaksi.peminjaman', 'admin.transaksi.pengembalian', 'admin.transaksi.denda');
+            @endphp
+            <li class="nav-item {{ $transaksiAktif ? 'active' : '' }}">
+                <a class="nav-link {{ $transaksiAktif ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseTransaksi"
+                    aria-expanded="{{ $transaksiAktif ? 'true' : 'false' }}" aria-controls="collapseTransaksi">
                     <i class="fas fa-fw fa-exchange-alt"></i>
                     <span>Transaksi</span>
                 </a>
-                <div id="collapseTransaksi" class="collapse" aria-labelledby="headingTransaksi" data-parent="#accordionSidebar">
+                <div id="collapseTransaksi" class="collapse {{ $transaksiAktif ? 'show' : '' }}" aria-labelledby="headingTransaksi" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('admin.transaksi.peminjaman') }}">Peminjaman</a>
-                        <a class="collapse-item" href="{{ route('admin.transaksi.pengembalian') }}">Pengembalian</a>
-                        <a class="collapse-item" href="{{ route('admin.transaksi.denda') }}">Denda</a>
+                        <a class="collapse-item {{ request()->routeIs('admin.transaksi.peminjaman') ? 'active' : '' }}" href="{{ route('admin.transaksi.peminjaman') }}">Peminjaman</a>
+                        <a class="collapse-item {{ request()->routeIs('admin.transaksi.pengembalian') ? 'active' : '' }}" href="{{ route('admin.transaksi.pengembalian') }}">Pengembalian</a>
+                        <a class="collapse-item {{ request()->routeIs('admin.transaksi.denda') ? 'active' : '' }}" href="{{ route('admin.transaksi.denda') }}">Denda</a>
                     </div>
                 </div>
             </li>
 
             <!-- Laporan -->
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('admin.laporan') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.laporan') }}">
                     <i class="fas fa-fw fa-file-alt"></i>
                     <span>Laporan</span>
@@ -112,10 +127,13 @@
             </li>
 
             <!-- All User -->
-            <li class="nav-item {{ Nav::isRoute('admin.users') && !request('role') ? 'active' : '' }}">
+            @php
+                $allUserAktif = request()->routeIs('admin.users') && request('role') !== 'user';
+            @endphp
+            <li class="nav-item {{ $allUserAktif ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.users') }}">
                     <i class="fas fa-fw fa-users-cog"></i>
-                    <span>Kelola User (All)</span>
+                    <span>Kelola Semua User</span>
                 </a>
             </li>
 
@@ -407,5 +425,12 @@
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Script khusus halaman -->
+@stack('scripts')
+
 </body>
 </html>
