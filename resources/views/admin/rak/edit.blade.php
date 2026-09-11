@@ -4,7 +4,7 @@
 
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">
-    {{ __('Tambah Kategori') }}
+    {{ __('Edit rak') }}
 </h1>
 
 @if ($errors->any())
@@ -23,39 +23,54 @@
 
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-                Tambah Data Kategori
+                Edit Data Rak
             </h6>
         </div>
 
         <div class="card-body">
 
-            <form action="{{ route('admin.kategori.store') }}"
+            <form action="{{ route('admin.rak.update', $rak->id) }}"
                   method="POST">
 
                 @csrf
+                @method('PUT')
 
-                <!-- Kategori -->
+                <!-- Nama Rak -->
                 <div class="form-group mb-4">
 
-                    <label for="kategori">
-                        Nama Kategori
+                    <label for="nama_rak">
+                        Nama Rak
                     </label>
 
                     <input
                         type="text"
-                        id="kategori"
-                        name="kategori"
+                        id="nama_rak"
+                        name="nama_rak"
                         class="form-control"
-                        value="{{ old('kategori') }}"
-                        placeholder="Masukkan nama kategori"
+                        value="{{ old('rak', $rak->nama_rak) }}"
+                        placeholder="Masukkan nama rak"
                         maxlength="100"
                         required
                     >
+                </div>
 
-                    <small class="form-text text-muted">
-                        Contoh: Fiksi, Teknologi, Pendidikan, Sejarah.
-                    </small>
+                <!-- Lokasi -->
+                <div class="form-group mb-4">
 
+                    <label for="lokasi">
+                        Lokasi / Keterangan
+                    </label>
+
+                    <input
+                        type="text"
+                        id="lokasi"
+                        name="lokasi"
+                        class="form-control"
+                        value="{{ old('rak', $rak->lokasi) }}"
+                        placeholder="Masukkan nama lokasi"
+                        maxlength="100"
+                        required
+                    >
                 </div>
 
                 <!-- Button -->
@@ -65,7 +80,7 @@
                             class="btn btn-primary">
 
                         <i class="fas fa-save"></i>
-                        Simpan Kategori
+                        Simpan Perubahan
 
                     </button>
 

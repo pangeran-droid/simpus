@@ -29,17 +29,7 @@ class KategoriController extends Controller
     public function store_kategori(Request $request)
     {
         $request->validate([
-            'kategori' => [
-                'required',
-                'string',
-                'max:100',
-                'unique:kategoris,kategori',
-            ],
-        ], [
-            'kategori.required' => 'Nama kategori wajib diisi.',
-            'kategori.string' => 'Nama kategori harus berupa teks.',
-            'kategori.max' => 'Nama kategori maksimal 100 karakter.',
-            'kategori.unique' => 'Kategori tersebut sudah tersedia.',
+            'kategori' => 'required|string|max:100|unique:kategoris,kategori',
         ]);
 
         Kategori::create([
@@ -63,17 +53,7 @@ class KategoriController extends Controller
         $category = Kategori::findOrFail($id);
 
         $request->validate([
-            'kategori' => [
-                'required',
-                'string',
-                'max:100',
-                'unique:kategoris,kategori,' . $category->id,
-            ],
-        ], [
-            'kategori.required' => 'Nama kategori wajib diisi.',
-            'kategori.string' => 'Nama kategori harus berupa teks.',
-            'kategori.max' => 'Nama kategori maksimal 100 karakter.',
-            'kategori.unique' => 'Kategori tersebut sudah tersedia.',
+            'kategori' => 'required|string|max:100|unique:kategoris,kategori,' . $category->id,
         ]);
 
         $category->update([
@@ -88,6 +68,13 @@ class KategoriController extends Controller
     public function destroy_kategori(string $id)
     {
         $category = Kategori::findOrFail($id);
+
+        if ($category->bukus()->count() > 0) {
+            return redirect()->back()
+                ->withErrors([
+                    'error' => 'Kategori tidak bisa dihapus karena masih digunakan oleh buku!'
+                ]);
+        }
 
         $category->delete();
 

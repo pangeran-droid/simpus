@@ -41,7 +41,7 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item {{ Nav::isRoute('home') }}">
+        <li class="nav-item {{ Nav::isRoute('admin') }}">
             <a class="nav-link" href="{{ route('admin.home') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>{{ __('Dashboard') }}</span></a>
@@ -49,66 +49,76 @@
 
         <!-- Admin Management -->
         @if(Auth::check() && Auth::user()->usertype === 'admin')
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading Admin -->
-            <div class="sidebar-heading">
-                {{ __('Admin Management') }}
-            </div>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+            <div class="sidebar-heading">{{ __('Menu Utama') }}</div>
 
             <!-- Master Data -->
-            <hr class="sidebar-divider">
-
-            <div class="sidebar-heading">
-                Master Data
-            </div>
-
-            <li class="nav-item {{ Nav::isRoute('admin.buku*') }}">
-                <a class="nav-link" href="{{ route('admin.buku') }}">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Data Buku</span>
-                </a>
-            </li>
-
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.kategori') }}">
-                    <i class="fas fa-fw fa-tags"></i>
-                    <span>Kategori Buku</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaster"
+                    aria-expanded="true" aria-controls="collapseMaster">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Master Data</span>
                 </a>
+                <div id="collapseMaster" class="collapse" aria-labelledby="headingMaster" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('admin.buku') }}">Data Buku</a>
+                        <a class="collapse-item" href="{{ route('admin.kategori') }}">Kategori Buku</a>
+                        <a class="collapse-item" href="{{ route('admin.rak') }}">Rak Buku</a>
+                    </div>
+                </div>
             </li>
 
+            <!-- Kanggotaan -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-layer-group"></i>
-                    <span>Rak Buku</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-pen"></i>
-                    <span>Penulis</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-building"></i>
-                    <span>Penerbit</span>
-                </a>
-            </li>
-
-            <!-- Kelola User -->
-            <li class="nav-item {{ Nav::isRoute('admin.users') }}">
-                <a class="nav-link" href="{{ route('admin.users') }}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAnggota"
+                    aria-expanded="true" aria-controls="collapseAnggota">
                     <i class="fas fa-fw fa-users"></i>
-                    <span>{{ __('Kelola User') }}</span>
+                    <span>Keanggotaan</span>
+                </a>
+                <div id="collapseAnggota" class="collapse" aria-labelledby="headingAnggota" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('admin.users', ['role' => 'user']) }}">Data Anggota</a>
+                        <a class="collapse-item" href="#">Kartu Anggota</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Transaksi -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransaksi"
+                    aria-expanded="true" aria-controls="collapseTransaksi">
+                    <i class="fas fa-fw fa-exchange-alt"></i>
+                    <span>Transaksi</span>
+                </a>
+                <div id="collapseTransaksi" class="collapse" aria-labelledby="headingTransaksi" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('admin.transaksi.peminjaman') }}">Peminjaman</a>
+                        <a class="collapse-item" href="{{ route('admin.transaksi.pengembalian') }}">Pengembalian</a>
+                        <a class="collapse-item" href="{{ route('admin.transaksi.denda') }}">Denda</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Laporan -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.laporan') }}">
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <span>Laporan</span>
                 </a>
             </li>
+
+            <!-- All User -->
+            <li class="nav-item {{ Nav::isRoute('admin.users') && !request('role') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.users') }}">
+                    <i class="fas fa-fw fa-users-cog"></i>
+                    <span>Kelola User (All)</span>
+                </a>
+            </li>
+
         @endif
 
         <!-- User Management -->

@@ -4,7 +4,7 @@
 
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">
-    {{ __('Tambah Kategori') }}
+    {{ __('Tambah Rak') }}
 </h1>
 
 @if ($errors->any())
@@ -23,58 +23,65 @@
 
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-                Tambah Data Kategori
+                Tambah Data Rak
             </h6>
         </div>
 
         <div class="card-body">
 
-            <form action="{{ route('admin.kategori.store') }}"
-                  method="POST">
+            <form action="{{ route('admin.rak.store') }}"
+                  method="POST"
+                  enctype="multipart/form-data">
 
                 @csrf
 
-                <!-- Kategori -->
-                <div class="form-group mb-4">
-
-                    <label for="kategori">
-                        Nama Kategori
-                    </label>
+                <!-- Kode Buku -->
+                <div class="form-group mb-3">
+                    <label for="nama_rak">Nama Rak</label>
 
                     <input
                         type="text"
-                        id="kategori"
-                        name="kategori"
+                        id="nama_rak"
+                        name="nama_rak"
                         class="form-control"
-                        value="{{ old('kategori') }}"
-                        placeholder="Masukkan nama kategori"
-                        maxlength="100"
+                        value="{{ old('nama_rak') }}"
+                        placeholder="Contoh: BK001"
                         required
                     >
 
                     <small class="form-text text-muted">
-                        Contoh: Fiksi, Teknologi, Pendidikan, Sejarah.
+                        Kode buku harus unik.
                     </small>
-
                 </div>
+
+                <!-- Lokasi Rak -->
+                <div class="form-group mb-3">
+                    <label for="rak">Lokasi Rak</label>
+
+                    <input
+                        type="text"
+                        id="lokasi"
+                        name="lokasi"
+                        class="form-control"
+                        value="{{ old('lokasi') }}"
+                        placeholder="Contoh: Rak A-01"
+                    >
+                </div>
+
+                <hr>
 
                 <!-- Button -->
                 <div class="mt-4">
 
-                    <button type="submit"
-                            class="btn btn-primary">
-
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i>
-                        Simpan Kategori
-
+                        Simpan Buku
                     </button>
 
-                    <a href="{{ route('admin.kategori') }}"
+                    <a href="{{ route('admin.rak') }}"
                        class="btn btn-secondary">
-
                         <i class="fas fa-arrow-left"></i>
                         Kembali
-
                     </a>
 
                 </div>
@@ -82,7 +89,6 @@
             </form>
 
         </div>
-
     </div>
 
 </div>

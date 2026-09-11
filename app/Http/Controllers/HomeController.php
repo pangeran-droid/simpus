@@ -61,19 +61,25 @@ class HomeController extends Controller
     public function show_user(Request $request)
     {
         $search = $request->input('search');
+        $selectedRole = $request->query('role');
+        $query = User::query();
 
-        if ($search) {
-            $data = User::where('name', 'LIKE', "%$search%")
-                ->orWhere('email', 'LIKE', "%$search%")
-                ->orWhere('phone', 'LIKE', "%$search%")
-                ->get();
-        } else {
-            $data = User::all();
+        if ($selectedRole && $selectedRole !== 'all') {
+            $query->where('usertype', $selectedRole);
         }
 
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%")
+                ->orWhere('phone', 'LIKE', "%$search%");
+            });
+        }
+
+        $data = $query->orderBy('name', 'asc')->get();
         $title = 'All Users';
 
-        return view('admin.users.index', compact('data', 'title'));
+        return view('admin.users.index', compact('data', 'title', 'selectedRole'));
     }
 
     public function create_user()

@@ -18,9 +18,7 @@
 @endif
 
 <div class="container-fluid px-0">
-
     <div class="card shadow mb-4">
-
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
                 Edit Data Buku
@@ -29,7 +27,7 @@
 
         <div class="card-body">
 
-            <form action="{{ route('update_buku', $buku->id) }}"
+            <form action="{{ route('admin.buku.update', $buku->id) }}"
                   method="POST"
                   enctype="multipart/form-data">
 
@@ -84,7 +82,7 @@
                             -- Pilih Kategori --
                         </option>
 
-                        @foreach($kategori as $category)
+                        @foreach($categories as $category)
                             <option
                                 value="{{ $category->id }}"
                                 {{ old('kategori_id', $buku->kategori_id) == $category->id ? 'selected' : '' }}
@@ -143,65 +141,46 @@
                     >
                 </div>
 
-                <!-- ISBN -->
-                <div class="form-group mb-3">
-                    <label for="isbn">ISBN</label>
-
-                    <input
-                        type="text"
-                        id="isbn"
-                        name="isbn"
-                        class="form-control"
-                        value="{{ old('isbn', $buku->isbn) }}"
-                        placeholder="Masukkan ISBN"
-                    >
-                </div>
-
                 <!-- Jumlah -->
                 <div class="form-group mb-3">
-                    <label for="jumlah">Jumlah Buku</label>
+                    <label for="stok">Jumlah Buku</label>
 
                     <input
                         type="number"
-                        id="jumlah"
-                        name="jumlah"
+                        id="stok"
+                        name="stok"
                         class="form-control"
-                        value="{{ old('jumlah', $buku->jumlah) }}"
-                        min="1"
-                        placeholder="Masukkan jumlah buku"
+                        value="{{ old('stok', $buku->stok) }}"
+                        min="0"
+                        placeholder="Masukkan stok buku"
                         required
                     >
-
-                    <small class="form-text text-muted">
-                        Perubahan jumlah akan memengaruhi stok buku.
-                    </small>
                 </div>
 
                 <!-- Lokasi Rak -->
                 <div class="form-group mb-3">
-                    <label for="lokasi_rak">Lokasi Rak</label>
+                    <label for="rak">Lokasi Rak</label>
 
                     <input
                         type="text"
-                        id="lokasi_rak"
-                        name="lokasi_rak"
+                        id="rak"
+                        name="rak"
                         class="form-control"
-                        value="{{ old('lokasi_rak', $buku->lokasi_rak) }}"
+                        value="{{ old('rak', $buku->rak) }}"
                         placeholder="Contoh: Rak A-01"
-                        required
                     >
                 </div>
 
                 <!-- Foto -->
                 <div class="form-group mb-4">
-                    <label for="foto">
+                    <label for="cover">
                         Foto Sampul Buku
                     </label>
 
-                    @if ($buku->foto)
+                    @if ($buku->cover)
                         <div class="mb-3">
                             <img
-                                src="{{ asset('uploads/buku/' . $buku->foto) }}"
+                                src="{{ asset('uploads/buku/' . $buku->cover) }}"
                                 alt="{{ $buku->judul }}"
                                 width="120"
                                 height="160"
@@ -213,15 +192,14 @@
 
                     <input
                         type="file"
-                        id="foto"
-                        name="foto"
+                        id="cover"
+                        name="cover"
                         class="form-control-file"
                         accept=".jpg,.jpeg,.png"
                     >
 
                     <small class="form-text text-muted">
-                        Kosongkan jika tidak ingin mengganti foto.
-                        Format: JPG, JPEG, PNG. Maksimal 1 MB.
+                        Kosongkan jika tidak ingin mengganti foto. Format: JPG, JPEG, PNG. Maksimal 2 MB.
                     </small>
                 </div>
 

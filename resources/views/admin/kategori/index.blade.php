@@ -79,7 +79,7 @@
                                     </a>
 
                                     <!-- Delete -->
-                                    <form action="{{ route('destroy_kategori', $category->id) }}"
+                                    <form action="{{ route('admin.kategori.destroy', $category->id) }}"
                                           method="POST"
                                           style="display: inline;"
                                           onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">

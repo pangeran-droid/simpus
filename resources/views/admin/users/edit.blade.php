@@ -35,7 +35,7 @@
 
             <div class="card-body">
 
-            <form action="{{ route('update_user', $user->id) }}"
+            <form action="{{ route('admin.user.update', $user->id) }}"
                 method="POST"
                 enctype="multipart/form-data">
 

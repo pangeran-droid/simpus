@@ -29,7 +29,7 @@
 
         <div class="card-body">
 
-            <form action="{{ route('store_buku') }}"
+            <form action="{{ route('admin.buku.store') }}"
                   method="POST"
                   enctype="multipart/form-data">
 
@@ -142,67 +142,64 @@
                     >
                 </div>
 
-                <!-- ISBN -->
+                <!-- Stok -->
                 <div class="form-group mb-3">
-                    <label for="isbn">ISBN</label>
-
-                    <input
-                        type="text"
-                        id="isbn"
-                        name="isbn"
-                        class="form-control"
-                        value="{{ old('isbn') }}"
-                        placeholder="Masukkan ISBN"
-                    >
-                </div>
-
-                <!-- Jumlah -->
-                <div class="form-group mb-3">
-                    <label for="jumlah">Jumlah Buku</label>
+                    <label for="stok">Jumlah Buku</label>
 
                     <input
                         type="number"
-                        id="jumlah"
-                        name="jumlah"
+                        id="stok"
+                        name="stok"
                         class="form-control"
-                        value="{{ old('jumlah', 1) }}"
-                        min="1"
-                        placeholder="Masukkan jumlah buku"
+                        value="{{ old('stok') }}"
+                        min="0"
+                        placeholder="Masukkan stok buku"
                         required
                     >
                 </div>
 
-                <!-- Lokasi Rak -->
+                <!-- Rak -->
                 <div class="form-group mb-3">
-                    <label for="lokasi_rak">Lokasi Rak</label>
+                    <label for="kategori_id">Rak</label>
 
-                    <input
-                        type="text"
-                        id="lokasi_rak"
-                        name="lokasi_rak"
+                    <select
+                        id="rak_id"
+                        name="rak_id"
                         class="form-control"
-                        value="{{ old('lokasi_rak') }}"
-                        placeholder="Contoh: Rak A-01"
                         required
                     >
+                        <option value="">
+                            -- Pilih Rak --
+                        </option>
+
+                        @foreach($raks as $rak)
+                            <option
+                                value="{{ $rak->id }}"
+                                {{ old('rak_id') == $rak->id ? 'selected' : '' }}
+                            >
+                                {{ $rak->nama_rak }}
+                            </option>
+                        @endforeach
+
+                    </select>
                 </div>
 
                 <!-- Foto -->
                 <div class="form-group mb-4">
-                    <label for="foto">
+                    <label for="cover">
                         Foto Sampul Buku
                     </label>
 
                     <input
                         type="file"
-                        id="foto"
-                        name="foto"
+                        id="cover"
+                        name="cover"
                         class="form-control-file"
                         accept=".jpg,.jpeg,.png"
                     >
 
                     <small class="form-text text-muted">
-                        Format: JPG, JPEG, PNG. Maksimal 1 MB.
+                        Format: JPG, JPEG, PNG. Maksimal 2 MB.
                     </small>
                 </div>
 

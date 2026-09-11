@@ -22,9 +22,11 @@ return new class extends Migration
             $table->string('penulis', 100);
             $table->string('penerbit', 100);
             $table->year('tahun_terbit');
-            $table->string('isbn', 20)->nullable()->unique();
             $table->unsignedInteger('stok')->default(0);
-            $table->string('rak', 50)->nullable();
+            $table->foreignId('rak_id')
+                ->constrained('raks')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
             $table->string('cover')->nullable();
             $table->text('deskripsi')->nullable();
             $table->timestamps();

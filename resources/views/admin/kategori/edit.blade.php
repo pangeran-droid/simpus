@@ -29,7 +29,7 @@
 
         <div class="card-body">
 
-            <form action="{{ route('update_kategori', $category->id) }}"
+            <form action="{{ route('admin.kategori.update', $category->id) }}"
                   method="POST">
 
                 @csrf

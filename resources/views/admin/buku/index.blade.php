@@ -53,20 +53,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($data as $book)
+                            @forelse($data as $buku)
                                 <tr>
-                                    <!-- No -->
                                     <td class="text-center">
                                         {{ $loop->iteration }}
                                     </td>
-                                    <!-- Cover -->
                                     <td class="text-center">
 
-                                        @if($book->cover)
-
+                                        @if($buku->cover)
                                             <img
-                                                src="{{ asset('uploads/books/' . $book->cover) }}"
-                                                alt="{{ $book->judul }}"
+                                                src="{{ asset('uploads/buku/' . $buku->cover) }}"
+                                                alt="{{ $buku->judul }}"
                                                 style="
                                                     width: 60px;
                                                     height: 80px;
@@ -76,145 +73,90 @@
                                             >
 
                                         @else
-
                                             <div class="text-muted">
-
                                                 <i class="fas fa-book fa-2x"></i>
-
                                                 <br>
-
                                                 <small>
                                                     Tidak ada cover
                                                 </small>
-
                                             </div>
-
                                         @endif
 
                                     </td>
-
-
-                                    <!-- Kode Buku -->
                                     <td>
-
                                         <strong>
-                                            {{ $book->kode_buku }}
+                                            {{ $buku->kode_buku }}
                                         </strong>
-
                                     </td>
-
-
-                                    <!-- Judul -->
                                     <td>
-
                                         <strong>
-                                            {{ $book->judul }}
+                                            {{ $buku->judul }}
                                         </strong>
-
                                     </td>
-
-
-                                    <!-- Kategori -->
                                     <td>
 
-                                        @if($book->kategori)
-
+                                        @if($buku->kategori)
                                             <span class="badge badge-primary">
-                                                {{ $book->kategori->kategori }}
+                                                {{ $buku->kategori->kategori }}
                                             </span>
-
                                         @else
-
                                             <span class="text-muted">
                                                 -
                                             </span>
-
                                         @endif
 
                                     </td>
-
-
-                                    <!-- Penulis -->
                                     <td>
-                                        {{ $book->penulis }}
+                                        {{ $buku->penulis }}
                                     </td>
-
-
-                                    <!-- Penerbit -->
                                     <td>
-                                        {{ $book->penerbit }}
+                                        {{ $buku->penerbit }}
                                     </td>
-
-
-                                    <!-- Tahun -->
                                     <td class="text-center">
-                                        {{ $book->tahun_terbit }}
+                                        {{ $buku->tahun_terbit }}
                                     </td>
-
-
-                                    <!-- Stok -->
                                     <td class="text-center">
 
-                                        @if($book->stok > 0)
-
+                                        @if($buku->stok > 0)
                                             <span class="badge badge-success">
-                                                {{ $book->stok }}
+                                                {{ $buku->stok }}
                                             </span>
-
                                         @else
-
                                             <span class="badge badge-danger">
                                                 Habis
                                             </span>
-
                                         @endif
 
                                     </td>
-
-
-                                    <!-- Rak -->
                                     <td class="text-center">
 
-                                        @if($book->rak)
-
+                                        @if($buku->rak)
                                             <span class="badge badge-secondary">
-                                                {{ $book->rak }}
+                                                {{ $buku->rak->nama_rak }}
                                             </span>
-
                                         @else
-
                                             <span class="text-muted">
                                                 -
                                             </span>
-
                                         @endif
 
                                     </td>
-
-
-                                    <!-- Action -->
                                     <td class="text-center">
-
                                         <!-- Edit -->
-                                        <a href="{{ route('admin.buku.edit', $book->id) }}"
+                                        <a href="{{ route('admin.buku.edit', $buku->id) }}"
                                         class="btn btn-info btn-sm"
                                         title="Edit">
-
                                             <i class="fas fa-edit"></i>
-
                                         </a>
-
-
                                         <!-- Delete -->
                                         <form
-                                            action="{{ route('destroy_buku', $book->id) }}"
+                                            action="{{ route('admin.buku.destroy', $buku->id) }}"
                                             method="POST"
                                             style="display: inline;"
                                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus buku ini?');"
                                         >
 
                                             @csrf
-
                                             @method('DELETE')
 
                                             <button
@@ -222,49 +164,30 @@
                                                 class="btn btn-danger btn-sm"
                                                 title="Delete"
                                             >
-
                                                 <i class="fas fa-trash"></i>
-
                                             </button>
-
                                         </form>
-
                                     </td>
-
                                 </tr>
 
-
                             @empty
-
                                 <tr>
-
                                     <td
                                         colspan="11"
                                         class="text-center text-muted py-4"
                                     >
-
                                         <i class="fas fa-book fa-2x mb-2"></i>
-
                                         <br>
-
                                         Belum ada buku.
-
                                     </td>
-
                                 </tr>
-
                             @endforelse
 
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
 @endsection
